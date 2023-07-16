@@ -1,0 +1,19 @@
+-- migrate:up
+CREATE TABLE users (
+  id INT NOT NULL AUTO_INCREMENT,
+  kakao_id VARCHAR(30) NOT NULL UNIQUE,
+  name VARCHAR(50) NULL,
+  nickname VARCHAR(20) NULL, 
+  email VARCHAR(200) NULL UNIQUE,
+  password VARCHAR(1000) NULL,
+  phone_number VARCHAR(50) NULL UNIQUE,
+  birthdate VARCHAR(50) NULL,
+  age_id int NULL DEFAULT 1,
+  gender_id int NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+)
+
+-- migrate:down
+DROP TABLE users
