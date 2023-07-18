@@ -1,5 +1,6 @@
-import {dataSource} from './dataSource';
+import { dataSource } from './dataSource.js';
+import roomDao from "./roomDao.js";
 
-module.exports = {
-    dataSource
+export {
+    dataSource, roomDao
 }

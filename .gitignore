@@ -1,4 +1,5 @@
 db/schema.sql
+sample.js
 .prettierrc
 
 # Created by https://www.toptal.com/developers/gitignore/api/vim,macos,node,linux,visualstudiocode,dotenv
