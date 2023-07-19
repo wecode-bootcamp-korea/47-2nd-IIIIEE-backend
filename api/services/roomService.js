@@ -18,6 +18,7 @@ const ages = async() => {
 
 const times = async() => {
   return await roomDao.times();
+}
 
 export default {
   roomsByGuest,

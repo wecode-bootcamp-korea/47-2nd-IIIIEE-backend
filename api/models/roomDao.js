@@ -99,6 +99,12 @@ const genders = async() => {
       FROM genders
       `
     )
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+}
 
 const times = async() => {
   try {
