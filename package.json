@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+    "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config",
     "start": "nodemon server.js"
   },
   "repository": {
