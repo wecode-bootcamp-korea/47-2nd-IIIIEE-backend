@@ -6,6 +6,19 @@ const districts = catchAsync(async (req, res) => {
   return res.status(200).json({ data: districts });
 });
 
-export default {
-  districts
-};
+const getRestaurantInfo = catchAsync(async (req, res) => {
+  const { restaurantId } = req.params;
+
+  if (!restaurantId) {
+    const error = new Error('KEY_ERROR');
+    error.statusCode = 400;
+
+    throw error;
+  }
+
+  const getRestaurantInfo = await restaurantService.getRestaurantInfo(restaurantId);
+
+  return res.status(200).json({ data: getRestaurantInfo });
+});
+
+export default { districts, getRestaurantInfo };

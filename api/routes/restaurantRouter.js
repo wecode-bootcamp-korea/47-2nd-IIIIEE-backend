@@ -4,5 +4,6 @@ import { restaurantController } from '../controllers/index.js';
 const restaurantRouter = express.Router();
 
 restaurantRouter.get('/categories/districts', restaurantController.districts);
+restaurantRouter.get('/:restaurantId', restaurantController.getRestaurantInfo);
 
 export { restaurantRouter };
