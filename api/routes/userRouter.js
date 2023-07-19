@@ -3,6 +3,6 @@ import { userController } from '../controllers/index.js';
 
 const userRouter = express.Router();
 
-userRouter.post('/kakaoLogin', userController.kakaoLogin);
+userRouter.get('/kakaoLogin', userController.kakaoLogin);
 
 export { userRouter };
