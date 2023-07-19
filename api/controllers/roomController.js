@@ -5,7 +5,7 @@ const roomsByHost = catchAsync(async(req, res) => {
     const userId = req.params.userId
 
     if (!userId) {
-    const error = new Error("KEY_ERROR");
+    const error = new Error('KEY_ERROR');
     error.statusCode = 400;
     throw error;
     }
@@ -14,7 +14,14 @@ const roomsByHost = catchAsync(async(req, res) => {
     return res.status(200).json({ data: rooms });
 });
 
- const genders = catchAsync(async(req, res) => {
+const roomsByGuest = catchAsync(async(req, res) => {
+    const userId = req.user.id
+    
+    const rooms = await roomService.roomsByGuest(userId);
+    return res.status(200).json({ data: rooms });
+ });
+
+const genders = catchAsync(async(req, res) => {
     const genders = await roomService.genders();
     return res.status(200).json({ data: genders });
 });
@@ -31,6 +38,7 @@ const times = catchAsync(async(req, res) => {
 
  export default {
     roomsByHost,
+    roomsByGuest,
     genders,
     ages,
     times
