@@ -1,26 +1,24 @@
-import {createApp} from './app.js';
-import {dataSource} from './api/models/dataSource.js';
+import { createApp } from './app.js';
+import { dataSource } from './api/models/dataSource.js';
 
 const startServer = async () => {
   const app = createApp();
   const PORT = process.env.PORT || 3000;
-  
-  app.listen(PORT, async() => {
+
+  app.listen(PORT, async () => {
     console.log(`Listening to request on 127.0.0.1:${PORT}`);
     await dataSource
-    .initialize()
-    .then(() => {
-      console.log('Data Source has been initialized!');
-    })
-    .catch((error) => {
-      console.error('Error during Data Source initialization', error);
-    });
-  
+      .initialize()
+      .then(() => {
+        console.log('Data Source has been initialized!');
+      })
+      .catch((error) => {
+        console.error('Error during Data Source initialization', error);
+      });
   });
-  app.get('/ping',(req,res) => {
-    res.json({ message: "pong" });
-  })
+  app.get('/ping', (req, res) => {
+    res.json({ message: 'pong' });
+  });
 };
 
 startServer();
-                                
