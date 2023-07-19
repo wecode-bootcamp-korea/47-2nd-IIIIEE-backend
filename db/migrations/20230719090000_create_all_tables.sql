@@ -4,6 +4,7 @@ CREATE TABLE users (
   kakao_id VARCHAR(30) NOT NULL UNIQUE,
   name VARCHAR(50) NULL,
   nickname VARCHAR(20) NULL, 
+	profile_image VARCHAR(1000) NULL,
   email VARCHAR(200) NULL UNIQUE,
   password VARCHAR(1000) NULL,
   phone_number VARCHAR(50) NULL UNIQUE,
@@ -70,9 +71,14 @@ CREATE TABLE restaurants (
   location_x decimal(12,8) not null,
   location_y decimal(12,8) not null,
   type varchar(30) not null,
-  image varchar(1000) not null,
   rating varchar(10) not null,
   description text(100)
+);
+
+CREATE TABLE restaurant_images (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  restaurant_id INT NOT NULL,
+  image varchar(1000) NOT NULL
 );
 
 CREATE TABLE restaurant_reviews (
@@ -102,4 +108,3 @@ CREATE TABLE messages (
 );
 
 -- migrate:down
-
