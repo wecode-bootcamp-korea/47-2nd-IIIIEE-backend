@@ -8,7 +8,6 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -23,17 +22,18 @@
   },
   "homepage": "https://github.com/wecode-bootcamp-korea/47-2nd-IIIIEE-backend#readme",
   "dependencies": {
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jest": "^29.6.1",
     "jsonwebtoken": "^9.0.1",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.5.1",
     "supertest": "^6.3.3",
-    "typeorm": "^0.3.17",
-    "morgan": "^1.10.0"
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "dbmate": "^2.5.0",
