@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
+
+
 
 import express from 'express';
 import cors from 'cors';
@@ -23,7 +23,6 @@ export const createApp = () => {
     next(err);
   });
 
-//   app.use(globalErrorHandler);
 
   return app;
 };

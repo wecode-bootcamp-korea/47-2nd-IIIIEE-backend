@@ -20,6 +20,7 @@ const startServer = async () => {
   app.get('/ping',(req,res) => {
     res.json({ message: "pong" });
   })
+  
 };
 
 startServer();

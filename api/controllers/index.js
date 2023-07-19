@@ -1,5 +1,9 @@
+
+
+// ./controllers/index.js
+import {roomCheckData} from "./roomCheckController.js";
 import roomController from './roomController.js';
 
 export {
-  roomController
+    roomCheckData,roomController
 }

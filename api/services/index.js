@@ -1,5 +1,8 @@
+
+import {passRoomsData} from "./roomCheckService.js";
 import roomService from '../services/roomService.js';
 
-export {
-  roomService
+export { 
+    passRoomsData,  roomService
+
 }
