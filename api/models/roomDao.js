@@ -11,7 +11,8 @@ const roomsByHost = async (userId) => {
         host_id AS hostId, 
         rooms.image, 
         date, 
-        time, 
+        times.id AS timeId,
+        times.hour,
         max_num AS maxNum, 
         ages.id AS ageId, 
         ages.age_range AS ageRange,
@@ -20,6 +21,7 @@ const roomsByHost = async (userId) => {
       FROM rooms
       JOIN ages ON ages.id = age_id
       JOIN genders ON genders.id = gender_id
+      JOIN times ON times.id = time_id
       JOIN restaurants ON restaurants.id = restaurant_id
       WHERE host_id = ?;
     `,
@@ -44,7 +46,8 @@ const roomsByGuest = async (userId) => {
         host_id AS hostId, 
         rooms.image, 
         date, 
-        time, 
+        times.id AS timeId,
+        times.hour,
         max_num AS maxNum, 
         ages.id AS ageId, 
         ages.age_range AS ageRange,
@@ -54,6 +57,7 @@ const roomsByGuest = async (userId) => {
       JOIN ages ON ages.id = age_id
       JOIN genders ON genders.id = gender_id
       JOIN restaurants ON restaurants.id = restaurant_id
+      JOIN times ON times.id = time_id
       LEFT JOIN room_guests on room_guests.room_id = rooms.id
       WHERE room_guests.user_id = ?
         OR host_id = ?;
@@ -68,7 +72,55 @@ const roomsByGuest = async (userId) => {
   }
 };
 
+const ages = async() => {
+  try {
+    return await dataSource.query(
+      `
+      SELECT 
+        id, 
+        age_range
+      FROM ages
+      `
+    )
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
+const genders = async() => {
+  try {
+    return await dataSource.query(
+      `
+      SELECT 
+        id, 
+        gender
+      FROM genders
+      `
+    )
+
+const times = async() => {
+  try {
+    return await dataSource.query(
+      `
+      SELECT 
+        id, 
+        hour
+      FROM times
+      `
+    )
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 export default {
   roomsByHost,
-  roomsByGuest
+  roomsByGuest,
+  ages,
+  genders,
+  times
 }
