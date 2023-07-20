@@ -20,6 +20,12 @@ const roomsByGuest = catchAsync(async (req, res) => {
   return res.status(200).json({ data: rooms });
 });
 
+const roomsByMe = catchAsync(async (req, res) => {
+  const userId = req.params.userId;
+  const rooms = await roomService.roomsByMe(userId);
+  return res.status(200).json({ data: rooms });
+});
+
 const genders = catchAsync(async (req, res) => {
   const genders = await roomService.genders();
   return res.status(200).json({ data: genders });
@@ -38,6 +44,7 @@ const times = catchAsync(async (req, res) => {
 export default {
   roomsByHost,
   roomsByGuest,
+  roomsByMe,
   genders,
   ages,
   times,
