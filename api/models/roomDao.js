@@ -63,6 +63,42 @@ const roomsByGuest = async (userId) => {
   }
 };
 
+const roomsByMe = async (userId) => {
+  try {
+    const rooms = await dataSource.query(
+      `
+      SELECT 
+        rooms.id AS roomId,
+        rooms.title AS roomTitle,
+        restaurants.id AS restaurantId, 
+        restaurants.name AS restaurantName,
+        rooms.image, 
+        date, 
+        times.hour,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'id', users.id, 
+            'name', users.name
+            )
+          ) as guests
+      FROM rooms
+      JOIN times ON times.id = time_id
+      JOIN restaurants ON restaurants.id = restaurant_id
+      INNER JOIN room_guests on room_guests.room_id = rooms.id
+      JOIN users on room_guests.user_id = users.id
+      WHERE host_id = ?
+      GROUP BY rooms.id;
+    `,
+      [userId]
+    );
+    return rooms;
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 const ages = async() => {
   try {
     return await dataSource.query(
@@ -117,6 +153,7 @@ const times = async() => {
 export default {
   roomsByHost,
   roomsByGuest,
+  roomsByMe,
   ages,
   genders,
   times
