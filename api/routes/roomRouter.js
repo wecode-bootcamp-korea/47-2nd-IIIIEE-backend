@@ -11,5 +11,6 @@ roomRouter.get('/member', roomController.roomsByGuest);
 roomRouter.get('/categories/genders', roomController.genders);
 roomRouter.get('/categories/ages', roomController.ages);
 roomRouter.get('/categories/times', roomController.times);
+roomRouter.post('/:roomId/joinRoom', loginRequired, roomController.joinRoom);
 
 export { roomRouter };

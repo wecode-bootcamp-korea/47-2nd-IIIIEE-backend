@@ -26,7 +26,7 @@ const roomsByGuest = catchAsync(async (req, res) => {
 });
 
 const roomsByMe = catchAsync(async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.user.id;
   const rooms = await roomService.roomsByMe(userId);
   return res.status(200).json({ data: rooms });
 });
@@ -46,6 +46,14 @@ const times = catchAsync(async (req, res) => {
   return res.status(200).json({ data: times });
 });
 
+const joinRoom = catchAsync(async (req, res) => {
+  const user = req.user;
+  const roomId = req.params.roomId;
+
+  await roomService.joinRoom(roomId, user);
+  return res.status(200).json({ message: 'User added to room' });
+});
+
 export default {
   createRoom,
   roomsByHost,
@@ -54,4 +62,5 @@ export default {
   genders,
   ages,
   times,
+  joinRoom,
 };

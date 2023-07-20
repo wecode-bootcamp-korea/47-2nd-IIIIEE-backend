@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
+import { ageRange, genderType } from '../enum/categories.js';
 
 import { userDao } from '../models/index.js';
 
@@ -36,32 +37,20 @@ const kakaoLogin = async (kakaoCode) => {
     kakao_account: { email: email, age_range: age, gender: gender },
   } = result.data;
 
-  const ageRange = Object.freeze({
-    '20~29': 1,
-    '30~39': 2,
-    '40~49': 3,
-    '50~59': 4,
-    '60~69': 5,
-    '70~79': 6,
-    '80~89': 7,
-    all: 8,
-    unknown: 9,
-  });
-
-  const genderType = Object.freeze({
-    male: 1,
-    female: 2,
-    all: 3,
-    unknown: 4,
-  });
-
   const ageId = ageRange[age] || 9;
   const genderId = genderType[gender] || 4;
 
   const userExist = await userDao.userExistByKakaoId(kakaoId);
 
   if (!userExist) {
-    await userDao.createUser(kakaoId, name, email, ageId, genderId, profileImage);
+    await userDao.createUser(
+      kakaoId,
+      name,
+      email,
+      ageId,
+      genderId,
+      profileImage
+    );
   }
 
   const user = await userDao.getUserIdByKakaoId(kakaoId);
