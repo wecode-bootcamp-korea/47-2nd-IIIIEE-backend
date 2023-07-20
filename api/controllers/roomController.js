@@ -1,6 +1,11 @@
 import { roomService } from '../services/index.js';
 import { catchAsync } from '../utils/error.js';
 
+const createRoom = catchAsync(async (req, res) => {
+  await roomService.createRoom(req.body);
+  return res.status(201).json({ message: 'ROOM_CREATED' });
+});
+
 const roomsByHost = catchAsync(async (req, res) => {
   const userId = req.params.userId;
 
@@ -42,6 +47,7 @@ const times = catchAsync(async (req, res) => {
 });
 
 export default {
+  createRoom,
   roomsByHost,
   roomsByGuest,
   roomsByMe,
