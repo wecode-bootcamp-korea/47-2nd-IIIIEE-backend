@@ -1,5 +1,76 @@
 import { dataSource } from './dataSource.js';
 
+const checkExistingRoom = async (restaurantId, hostId, date, timeId) => {
+  return await dataSource.query(
+    `SELECT 
+      restaurant_id,
+      host_id, 
+      date, 
+      time_id 
+      FROM rooms 
+      WHERE 
+      restaurant_id = ? AND host_id = ? AND date = ? AND time_id = ?`,
+    [restaurantId, hostId, date, timeId]
+  );
+};
+
+const createRoom = async (roomposts) => {
+  const {
+    restaurantId,
+    hostId,
+    title,
+    date,
+    timeId,
+    maxNum,
+    image,
+    content,
+    ageId,
+    genderId,
+    tag,
+    roomStatusId,
+  } = roomposts;
+
+  try {
+    const result = await dataSource.query(
+      `
+        INSERT INTO rooms (
+            restaurant_id,
+            host_id,
+            title,
+            date,
+            time_id,
+            max_num,
+            image,
+            content,
+            age_id,
+            gender_id,
+            tag,
+            room_status_id
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        restaurantId,
+        hostId,
+        title,
+        date,
+        timeId,
+        maxNum,
+        image,
+        content,
+        ageId,
+        genderId,
+        tag,
+        roomStatusId,
+      ]
+    );
+    return result;
+  } catch (err) {
+    const error = new Error();
+    error.message = 'INVALID_DATA_INPUT';
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 const roomsByHost = async (userId) => {
   try {
     const rooms = await dataSource.query(
@@ -99,7 +170,7 @@ const roomsByMe = async (userId) => {
   }
 };
 
-const ages = async() => {
+const ages = async () => {
   try {
     return await dataSource.query(
       `
@@ -108,7 +179,7 @@ const ages = async() => {
         age_range
       FROM ages
       `
-    )
+    );
   } catch {
     const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
@@ -116,7 +187,7 @@ const ages = async() => {
   }
 };
 
-const genders = async() => {
+const genders = async () => {
   try {
     return await dataSource.query(
       `
@@ -125,15 +196,15 @@ const genders = async() => {
         gender
       FROM genders
       `
-    )
+    );
   } catch {
     const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
-}
+};
 
-const times = async() => {
+const times = async () => {
   try {
     return await dataSource.query(
       `
@@ -142,7 +213,7 @@ const times = async() => {
         hour
       FROM times
       `
-    )
+    );
   } catch {
     const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
@@ -151,10 +222,12 @@ const times = async() => {
 };
 
 export default {
+  createRoom,
   roomsByHost,
   roomsByGuest,
   roomsByMe,
   ages,
   genders,
-  times
-}
+  times,
+  checkExistingRoom,
+};
