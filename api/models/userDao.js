@@ -1,13 +1,6 @@
 import { dataSource } from './dataSource.js';
 
-const createUser = async (
-  kakaoId,
-  name,
-  email,
-  ageId,
-  genderId,
-  profileImage
-) => {
+const createUser = async (kakaoId, name, email, ageId, genderId, profileImage) => {
   return await dataSource.query(
     `
       INSERT INTO users(

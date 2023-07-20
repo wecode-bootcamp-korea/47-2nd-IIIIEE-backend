@@ -10,7 +10,9 @@ const createReview = catchAsync(async (req, res) => {
   }
 
   await reviewService.createReview(userId, req.body);
-  return res.status(200).json({ message: 'SUCCESS POST REVIEW' });
+  return res.status(200).json({
+    message: 'SUCCESS POST REVIEW',
+  });
 });
 
 const getHostReview = catchAsync(async (req, res) => {
@@ -24,7 +26,12 @@ const getHostReview = catchAsync(async (req, res) => {
 
   const getHostReview = await reviewService.getHostReview(hostId);
 
-  return res.status(200).json({ data: getHostReview });
+  return res.status(200).json({
+    data: getHostReview,
+  });
 });
 
-export default { createReview, getHostReview };
+export default {
+  createReview,
+  getHostReview,
+};

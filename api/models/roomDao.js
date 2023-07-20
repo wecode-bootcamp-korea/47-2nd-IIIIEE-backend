@@ -15,20 +15,7 @@ const checkExistingRoom = async (restaurantId, hostId, date, timeId) => {
 };
 
 const createRoom = async (roomposts) => {
-  const {
-    restaurantId,
-    hostId,
-    title,
-    date,
-    timeId,
-    maxNum,
-    image,
-    content,
-    ageId,
-    genderId,
-    tag,
-    roomStatusId,
-  } = roomposts;
+  const { restaurantId, hostId, title, date, timeId, maxNum, image, content, ageId, genderId, tag, roomStatusId } = roomposts;
 
   try {
     const result = await dataSource.query(
@@ -47,20 +34,7 @@ const createRoom = async (roomposts) => {
             tag,
             room_status_id
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        restaurantId,
-        hostId,
-        title,
-        date,
-        timeId,
-        maxNum,
-        image,
-        content,
-        ageId,
-        genderId,
-        tag,
-        roomStatusId,
-      ]
+      [restaurantId, hostId, title, date, timeId, maxNum, image, content, ageId, genderId, tag, roomStatusId]
     );
     return result;
   } catch (err) {

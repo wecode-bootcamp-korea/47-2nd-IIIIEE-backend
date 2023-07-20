@@ -4,12 +4,7 @@ import { ageRange, genderType, orderStatus } from '../enum/categories.js';
 const createRoom = async (roomposts) => {
   const { restaurantId, hostId, date, timeId } = roomposts;
 
-  const existingRoom = await roomDao.checkExistingRoom(
-    restaurantId,
-    hostId,
-    date,
-    timeId
-  );
+  const existingRoom = await roomDao.checkExistingRoom(restaurantId, hostId, date, timeId);
 
   if (existingRoom.length > 0) {
     const error = new Error();
