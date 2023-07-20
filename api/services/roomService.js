@@ -1,11 +1,11 @@
 import { roomDao } from '../models/index.js';
 import { ageRange, genderType, roomStatus } from '../enum/categories.js';
 
-const createRoom = async (roomposts) => {
-  const { restaurantId, hostId, date, timeId } = roomposts;
+const createRoom = async (roomposts, hostId) => {
+  const { restaurantId, date, timeId } = roomposts;
 
   const existingRoom = await roomDao.checkExistingRoom(
-    restaurantId,
+    restaurantId.restaurantId,
     hostId,
     date,
     timeId
@@ -19,7 +19,11 @@ const createRoom = async (roomposts) => {
   }
 
   try {
-    return await roomDao.createRoom(roomposts);
+    return await roomDao.createRoom(
+      roomposts,
+      hostId,
+      restaurantId.restaurantId
+    );
   } catch (err) {
     const error = new Error();
     error.message = 'INVALID_DATA_INPUT';
@@ -91,8 +95,16 @@ const joinRoom = async (roomId, user) => {
   }
 };
 
-const inquireHostbyRoomId = async (roomId) => {
-  return await roomDao.inquireHostbyRoomId(roomId);
+const inquireHostbyRoomId = async (roomId, userId) => {
+  return await roomDao.inquireHostbyRoomId(roomId, userId);
+};
+
+const uploadImage = async (roomId, image) => {
+  try {
+    return await roomDao.uploadRoomImage(roomId, image);
+  } catch (err) {
+    throw new Error('COULD_NOT_PROCESS_REQUEST');
+  }
 };
 
 export default {
@@ -105,4 +117,5 @@ export default {
   times,
   joinRoom,
   inquireHostbyRoomId,
+  uploadImage,
 };

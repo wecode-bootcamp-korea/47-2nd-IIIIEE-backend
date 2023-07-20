@@ -1,12 +1,13 @@
 import express from 'express';
 import { roomController } from '../controllers/index.js';
+import { upload } from '../utils/s3.js';
 import { loginRequired } from '../utils/auth.js';
 
 const roomRouter = express.Router();
 
 roomRouter.post('', loginRequired, roomController.createRoom);
 roomRouter.get('/host', loginRequired, roomController.roomsByMe);
-roomRouter.get('/host/:userId', roomController.roomsByHost);
+roomRouter.get('/host/:userId', loginRequired, roomController.roomsByHost);
 roomRouter.get('/member', loginRequired, roomController.roomsByGuest);
 roomRouter.get('/categories/genders', roomController.genders);
 roomRouter.get('/categories/ages', roomController.ages);
@@ -15,6 +16,12 @@ roomRouter.get(
   '/info/:roomId',
   loginRequired,
   roomController.inquireHostbyRoomId
+);
+roomRouter.post(
+  '/image',
+  loginRequired,
+  upload.single('image'),
+  roomController.uploadRoomImage
 );
 roomRouter.post('/:roomId/joinRoom', loginRequired, roomController.joinRoom);
 

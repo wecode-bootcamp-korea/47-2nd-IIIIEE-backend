@@ -85,7 +85,7 @@ const getRestaurantInfo = async (restaurantId) => {
             'id', ri.id,
             'image', ri.image
           )
-        ) images
+        ) restaurantImage
       FROM restaurants re
       JOIN restaurant_images ri ON re.id = ri.restaurant_id
       WHERE re.id = ?

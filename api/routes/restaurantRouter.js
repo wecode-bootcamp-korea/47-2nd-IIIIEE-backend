@@ -11,6 +11,4 @@ restaurantRouter.get(
 restaurantRouter.get('/restaurantList', restaurantController.restaurantList);
 restaurantRouter.get('/categories/districts', restaurantController.districts);
 restaurantRouter.get('/:restaurantId', restaurantController.getRestaurantInfo);
-restaurantRouter.get('/restaurantList', restaurantController.restaurantList);
-
 export { restaurantRouter };

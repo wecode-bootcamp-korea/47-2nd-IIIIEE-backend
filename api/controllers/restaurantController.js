@@ -15,7 +15,9 @@ const getRestaurantInfo = catchAsync(async (req, res) => {
     throw error;
   }
 
-  const getRestaurantInfo = await restaurantService.getRestaurantInfo(restaurantId);
+  const getRestaurantInfo = await restaurantService.getRestaurantInfo(
+    restaurantId
+  );
 
   return res.status(200).json({ data: getRestaurantInfo });
 });
@@ -25,8 +27,14 @@ const restaurantList = catchAsync(async (req, res) => {
   res.status(200).json({ data: restaurantList });
 });
 
+const getRestaurantId = catchAsync(async (req, res) => {
+  const restaurantId = req.params.restaurantId;
+  return res.status(200).json({ data: restaurantId });
+});
+
 export default {
   districts,
   restaurantList,
   getRestaurantInfo,
+  getRestaurantId,
 };

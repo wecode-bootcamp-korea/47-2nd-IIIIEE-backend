@@ -1,4 +1,4 @@
-import { restaurantDao } from "../models/index.js";
+import { restaurantDao } from '../models/index.js';
 
 const districts = async () => {
   return await restaurantDao.districts();
@@ -10,7 +10,7 @@ const getRestaurantInfo = async (restaurantId) => {
   const existRestaurant = restaurant.restaurantId;
 
   if (existRestaurant === null) {
-    const error = new Error("INVALID_RESTAURANT_ID");
+    const error = new Error('INVALID_RESTAURANT_ID');
     error.statusCode = 404;
 
     throw error;
@@ -38,7 +38,7 @@ const getQuery = (beforeQuery) => {
     conditionRoomsQuery.push(`rooms.gender_id = ${gender}`);
   }
 
-  const totalConditionQuery = String(conditionRoomsQuery.join(" AND "));
+  const totalConditionQuery = String(conditionRoomsQuery.join(' AND '));
   conditionRestaurantQuery = String(conditionRestaurantQuery);
   let roomsQuery;
   let restaurantsQuery;
@@ -113,6 +113,7 @@ const getRestaurantList = async (conditionQuery) => {
     offset
   );
 };
+
 export default {
   districts,
   getRestaurantList,
