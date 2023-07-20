@@ -2,7 +2,7 @@ import { orderService } from '../services/index.js';
 import { catchAsync } from '../utils/error.js';
 
 const kakaoApprove = catchAsync(async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.user.id;
 
   const { tid, pgToken } = req.body;
 

@@ -14,15 +14,12 @@ const checkExistingRoom = async (restaurantId, hostId, date, timeId) => {
   );
 };
 
-const createRoom = async (roomposts) => {
+const createRoom = async (roomposts, hostId, restaurantId) => {
   const {
-    restaurantId,
-    hostId,
     title,
     date,
     timeId,
     maxNum,
-    image,
     content,
     ageId,
     genderId,
@@ -36,34 +33,33 @@ const createRoom = async (roomposts) => {
         INSERT INTO rooms (
             restaurant_id,
             host_id,
-            title,
+            title, 
             date,
             time_id,
             max_num,
-            image,
             content,
             age_id,
             gender_id,
             tag,
             room_status_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         restaurantId,
         hostId,
         title,
-        date,
+        date.substring(0, 10),
         timeId,
         maxNum,
-        image,
         content,
         ageId,
         genderId,
-        tag,
+        tag.join(),
         roomStatusId,
       ]
     );
-    return result;
-  } catch (err) {
+
+    return result.insertId;
+  } catch {
     const error = new Error();
     error.message = 'INVALID_DATA_INPUT';
     error.statusCode = 400;
@@ -78,6 +74,7 @@ const roomsByHost = async (userId) => {
       SELECT 
         rooms.id AS roomId,
         rooms.title AS roomTitle,
+        rooms.date as roomDate,
         restaurants.id AS restaurantId, 
         restaurants.name AS restaurantName,
         host_id AS hostId, 
@@ -92,14 +89,18 @@ const roomsByHost = async (userId) => {
         genders.id AS genderId,
         genders.gender,
         room_status_id as roomStatusId,
-        room_status.name as roomStatus
+        room_status.name as roomStatus,
+        SUM(restaurants.price + rooms.price) AS totalPrice,
+        restaurants.price as restaurantPrice,
+        rooms.price as roomPrice
       FROM rooms
       JOIN ages ON ages.id = age_id
       JOIN genders ON genders.id = gender_id
       JOIN times ON times.id = time_id
       JOIN restaurants ON restaurants.id = restaurant_id
       JOIN room_status on room_status.id = rooms.room_status_id
-      WHERE host_id = ?;
+      WHERE host_id = ?
+      GROUP BY rooms.id
     `,
       [userId]
     );
@@ -125,18 +126,22 @@ const roomsByGuest = async (userId) => {
         date,
         times.hour,
         room_status_id as roomStatusId,
-        room_status.name as roomStatus
+        room_status.name as roomStatus,
+        SUM(restaurants.price + rooms.price) AS totalPrice,
+        restaurants.price as restaurantPrice,
+        rooms.price as roomPrice
       FROM rooms
       JOIN restaurants ON restaurants.id = restaurant_id
       JOIN times ON times.id = time_id
       LEFT JOIN room_guests on room_guests.room_id = rooms.id
       JOIN room_status on room_status.id = rooms.room_status_id
       WHERE room_guests.user_id = ?
+      GROUP BY rooms.id;
     `,
       [userId]
     );
     return rooms;
-  } catch {
+  } catch (err) {
     const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
@@ -158,6 +163,9 @@ const roomsByMe = async (userId) => {
         times.hour,
         room_status_id as roomStatusId,
         room_status.name as roomStatus,
+        SUM(restaurants.price + rooms.price) AS totalPrice,
+        restaurants.price as restaurantPrice,
+        rooms.price as roomPrice,
         JSON_ARRAYAGG(
           JSON_OBJECT(
             'id', users.id, 
@@ -315,18 +323,19 @@ const changeStatus = async (roomId, statusId) => {
   }
 };
 
-const inquireHostbyRoomId = async (roomId) => {
+const inquireHostbyRoomId = async (roomId, userId) => {
   try {
     const [rooms] = await dataSource.query(
       `
         SELECT
     rooms.id AS roomId,
+    users.name AS guestName,
     restaurants.id AS restaurantId, 
     restaurants.name AS restaurantName,
     rooms.image AS roomImage,
     rooms.title AS roomTitle,
-    genders.id AS genderId,
-    genders.gender AS gender,
+    genders.id AS roomGenderId,
+    genders.gender AS roomGender,
     room_age.id AS roomAgeId,
     room_age.age_range AS roomAgeRange,
     rooms.tag AS roomTag,
@@ -348,7 +357,10 @@ const inquireHostbyRoomId = async (roomId) => {
     host_gender.gender AS hostGender,
     host_age.id AS hostAgeId,
     host_age.age_range AS hostAgeRange,
-    (SELECT AVG(rating) FROM host_reviews WHERE host_id = host.id) AS hostRating    
+    (SELECT AVG(rating) FROM host_reviews WHERE host_id = host.id) AS hostRating,
+    SUM(restaurants.price + rooms.price) AS totalPrice,
+    restaurants.price as restaurantPrice,
+    rooms.price as roomPrice
 FROM
     rooms
 JOIN
@@ -367,14 +379,48 @@ JOIN
     ages AS host_age ON host.age_id = host_age.id
 JOIN
     genders AS host_gender ON host.gender_id = host_gender.id
+JOIN 
+  users ON users.id = ?
 WHERE
-    rooms.id = ?;
+    rooms.id = ?
+GROUP BY
+    rooms.id;
             `,
-      [roomId]
+      [userId, roomId]
     );
+    rooms['roomTag'] = rooms['roomTag'].split(',');
     return rooms;
   } catch {
     const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
+const uploadRoomImage = async (roomId, image) => {
+  try {
+    const result = await dataSource.query(
+      `UPDATE rooms
+        SET image = ?
+      WHERE id = ?`,
+      [image, roomId]
+    );
+
+    if (result.affectedRows !== 1) {
+      throw new Error('INVALID_MODIFICATION');
+    }
+
+    const modifyImage = await dataSource.query(
+      `SELECT
+        id,
+        image
+      FROM rooms
+      WHERE id = ?`,
+      [roomId]
+    );
+    return modifyImage;
+  } catch (error) {
+    error = new Error('INVALID_DATA');
     error.statusCode = 400;
     throw error;
   }
@@ -394,4 +440,5 @@ export default {
   getRoomInfo,
   addMember,
   changeStatus,
+  uploadRoomImage,
 };

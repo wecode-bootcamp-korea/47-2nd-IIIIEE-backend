@@ -5,7 +5,7 @@ import { dataSource } from '../models/dataSource.js';
 const reviewNotification = schedule.scheduleJob('0 1 * * * *', async () => {
   const currentHour = new Date().getHours();
 
-  const timeId = currentHour - 1;
+  const timeId = currentHour;
 
   const userIds = await dataSource.query(
     `
