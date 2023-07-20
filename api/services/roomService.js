@@ -1,4 +1,5 @@
 import { roomDao } from '../models/index.js';
+import { ageRange, genderType, orderStatus } from '../enum/categories.js';
 
 const createRoom = async (roomposts) => {
   const { restaurantId, hostId, date, timeId } = roomposts;
@@ -51,6 +52,45 @@ const times = async () => {
   return await roomDao.times();
 };
 
+const joinRoom = async (roomId, user) => {
+  const isInRoom = await roomDao.isInRoom(roomId, user.id);
+  const room = await roomDao.getRoomInfo(roomId);
+
+  if (isInRoom || room.hostId == user.id) {
+    const error = new Error('USER_ALREADY_IN_ROOM');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (parseInt(room.count) + 1 == room.maxNum) {
+    const error = new Error('ROOM_FULL');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if (room.ageId < ageRange.all) {
+    if (room.ageId != user.ageId) {
+      const error = new Error('CANNOT_JOIN_ROOM');
+      error.statusCode = 400;
+      throw error;
+    }
+  }
+
+  if (room.genderId < genderType.all) {
+    if (room.genderId != user.genderId) {
+      const error = new Error('CANNOT_JOIN_ROOM');
+      error.statusCode = 400;
+      throw error;
+    }
+  }
+
+  await roomDao.addMember(roomId, user.id);
+
+  if (parseInt(room.count) + 1 == room.maxNum - 1) {
+    roomDao.changeStatus(roomId, orderStatus.FULL);
+  }
+};
+
 export default {
   roomsByGuest,
   createRoom,
@@ -59,4 +99,5 @@ export default {
   genders,
   ages,
   times,
+  joinRoom,
 };

@@ -1,6 +1,13 @@
 import { dataSource } from './dataSource.js';
 
-const createUser = async (kakaoId, name, email, ageId, genderId, profileImage) => {
+const createUser = async (
+  kakaoId,
+  name,
+  email,
+  ageId,
+  genderId,
+  profileImage
+) => {
   return await dataSource.query(
     `
       INSERT INTO users(
@@ -31,7 +38,9 @@ const getUserById = async (id) => {
       email,
       password,
       name,
-      phone_number phoneNumber
+      phone_number AS phoneNumber,
+      age_id AS ageId,
+      gender_id AS genderId
     FROM users
     WHERE id = ?
   `,
@@ -68,4 +77,9 @@ const getUserIdByKakaoId = async (kakaoId) => {
 
   return user;
 };
-export default { createUser, getUserById, userExistByKakaoId, getUserIdByKakaoId };
+export default {
+  createUser,
+  getUserById,
+  userExistByKakaoId,
+  getUserIdByKakaoId,
+};

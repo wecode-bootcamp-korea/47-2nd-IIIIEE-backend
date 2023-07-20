@@ -221,13 +221,95 @@ const times = async () => {
   }
 };
 
+const isInRoom = async (roomId, userId) => {
+  try {
+    const [userExist] = await dataSource.query(
+      `
+        SELECT EXISTS (
+          SELECT id FROM room_guests
+          WHERE room_id = ?
+            AND user_id = ?
+        ) exist
+      `,
+      [roomId, userId]
+    );
+    return !!parseInt(userExist.exist);
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
+const getRoomInfo = async (roomId) => {
+  try {
+    const [room] = await dataSource.query(
+      `
+      SELECT 
+        id,
+        (SELECT COUNT(id) from room_guests WHERE room_id = ?) as count,
+        room_status_id as roomStatusId,
+        host_id as hostId,
+        max_num as maxNum,
+        gender_id as genderId,
+        age_id as ageId
+      from rooms
+      WHERE id = ?
+      `,
+      [roomId, roomId]
+    );
+    return room;
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
+const addMember = async (roomId, userId) => {
+  try {
+    return await dataSource.query(
+      `
+      INSERT INTO room_guests (room_id, user_id)
+        VALUES (?, ?)
+      `,
+      [roomId, userId]
+    );
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
+const changeStatus = async (roomId, statusId) => {
+  try {
+    return await dataSource.query(
+      `
+      UPDATE rooms
+      SET room_status_id = ?
+      WHERE id = ?
+      `,
+      [statusId, roomId]
+    );
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 export default {
   createRoom,
+  checkExistingRoom,
   roomsByHost,
   roomsByGuest,
   roomsByMe,
   ages,
   genders,
   times,
-  checkExistingRoom,
+  isInRoom,
+  getRoomInfo,
+  addMember,
+  changeStatus,
 };
