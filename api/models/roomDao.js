@@ -1,5 +1,103 @@
 import { dataSource } from './dataSource.js';
 
+const getRoomList = async (conditionQuery) => {
+  try {
+    let conditionWhereQuery = [];
+    const { type, district, Date, age, gender, limit=20, offset=0 } = conditionQuery;
+ 
+    if (type) {
+      let typeList = type.split(',');
+      conditionWhereQuery.push(
+        `restaurants.type IN (${typeList
+          .map((type) => `'${type}'`)
+          .join(', ')})`
+      );
+    }
+    //해당 코드 참고해서 district mapping
+    // const ageRange = Object.freeze({
+    //   '20~29': 1,
+    //   '30~39': 2,
+    //   '40~49': 3,
+    //   '50~59': 4,
+    //   '60~69': 5,
+    //   '70~79': 6,
+    //   '80~89': 7,
+    //   all: 8,
+    //   unknown: 9,
+    // });
+    if (district) {
+      let districtId = await queryRunner.query(
+        `
+              SELECT id
+              FROM districts
+              WHERE districts.name = ?
+              `,
+        [district]
+      );
+      districtId = districtId[0]['id'];
+      conditionWhereQuery.push(`restaurants.district_id = ${district_id}`);
+    }
+
+    if (Date) {
+      let [date, time] = Date.split('T');
+      date =
+        String(Number(date.split('-')[1])) +
+        '/' +
+        String(Number(date.split('-')[2]));
+      time = time.split(':')[0] + ':' + time.split(':')[1];
+      //date랑 time을 합치기
+      conditionWhereQuery.push(`rooms.date = '${date}'`);
+      conditionWhereQuery.push(`rooms.time = '${time}'`);
+    }
+    if (age) {
+      let age_id = await queryRunner.query(
+        `
+              SELECT id
+              FROM ages
+              WHERE ages.age_range = ?
+              `,
+        [age]
+      );
+      age_id = age_id[0]['id'];
+      conditionWhereQuery.push(`rooms.age_id = ${age_id}`);
+    }
+    if (gender) {
+      let genderId = await queryRunner.query(
+        `
+              SELECT id 
+              FROM genders
+              WHERE genders.gender = ?
+              `,
+        [gender]
+      );
+      genderId = genderId[0]['id'];
+      conditionWhereQuery.push(`rooms.gender_id = ${gender_id}`);
+    }
+    const totalConditionQuery = conditionWhereQuery.join(' AND ');
+
+    const roomsQuery = `
+              SELECT 
+                restaurants.id as 'restaurantsId', 
+                JSON_ARRAYGG(
+                  JSON_OBJECT(
+                    rooms.id as '방 id', 
+                    rooms.title as '방 제목', 
+                    rooms.content as '방 내용'
+                  )
+                )
+              FROM restaurants
+              JOIN rooms ON rooms.restaurant_id = restaurants.id
+              WHERE ${totalConditionQuery}
+              ORDER BY '식당 id' ASC;
+              LIMIT ${} OFFSET ${}
+          `;
+ 
+    return roomsTransform;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const roomsByHost = async (userId) => {
   try {
     const rooms = await dataSource.query(
@@ -72,7 +170,7 @@ const roomsByGuest = async (userId) => {
   }
 };
 
-const ages = async() => {
+const ages = async () => {
   try {
     return await dataSource.query(
       `
@@ -81,7 +179,7 @@ const ages = async() => {
         age_range
       FROM ages
       `
-    )
+    );
   } catch {
     const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
@@ -89,7 +187,7 @@ const ages = async() => {
   }
 };
 
-const genders = async() => {
+const genders = async () => {
   try {
     return await dataSource.query(
       `
@@ -98,15 +196,15 @@ const genders = async() => {
         gender
       FROM genders
       `
-    )
+    );
   } catch {
     const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
-}
+};
 
-const times = async() => {
+const times = async () => {
   try {
     return await dataSource.query(
       `
@@ -115,7 +213,7 @@ const times = async() => {
         hour
       FROM times
       `
-    )
+    );
   } catch {
     const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
@@ -124,9 +222,10 @@ const times = async() => {
 };
 
 export default {
+  getRoomList,
   roomsByHost,
   roomsByGuest,
   ages,
   genders,
-  times
-}
+  times,
+};

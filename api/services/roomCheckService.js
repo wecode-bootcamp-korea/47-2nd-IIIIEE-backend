@@ -1,11 +1,11 @@
-import {roomCheckDao} from "../models/index.js";
+import { roomDao } from '../models/index.js';
 
-const passRoomsData = async (conditionQuery) => {
-    try{
-        return await roomCheckDao.getRoomsData(conditionQuery);
-    }catch(error){
-        throw error;
-    }
-}
+const getRoomList = async (conditionQuery) => {
+  try {
+    return await roomDao.getRoomList(conditionQuery);
+  } catch (error) {
+    throw error;
+  }
+};
 
-export { passRoomsData }
+export { getRoomList };

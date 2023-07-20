@@ -1,8 +1,7 @@
-import express from "express"
-import { roomCheckData } from "../controllers/index.js";
-import { globalErrorHandler } from "../utils/error.js";
+import express from 'express';
+import { roomCheckData } from '../controllers/index.js';
 
 const roomCheckRouter = express.Router();
-roomCheckRouter.get('',roomCheckData, globalErrorHandler);
+roomCheckRouter.get('', roomCheckData);
 
-export { roomCheckRouter }
+export { roomCheckRouter };
