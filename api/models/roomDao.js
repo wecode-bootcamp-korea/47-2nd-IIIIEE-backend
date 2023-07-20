@@ -41,28 +41,19 @@ const roomsByGuest = async (userId) => {
       `
       SELECT 
         rooms.id AS roomId,
+        rooms.title AS roomTitle,
         restaurants.id AS restaurantId, 
         restaurants.name AS restaurantName,
-        host_id AS hostId, 
         rooms.image, 
-        date, 
-        times.id AS timeId,
-        times.hour,
-        max_num AS maxNum, 
-        ages.id AS ageId, 
-        ages.age_range AS ageRange,
-        genders.id AS genderId,
-        genders.gender
+        date,
+        times.hour
       FROM rooms
-      JOIN ages ON ages.id = age_id
-      JOIN genders ON genders.id = gender_id
       JOIN restaurants ON restaurants.id = restaurant_id
       JOIN times ON times.id = time_id
       LEFT JOIN room_guests on room_guests.room_id = rooms.id
       WHERE room_guests.user_id = ?
-        OR host_id = ?;
     `,
-      [userId, userId]
+      [userId]
     );
     return rooms;
   } catch {

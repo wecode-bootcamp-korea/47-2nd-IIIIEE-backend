@@ -16,7 +16,6 @@ const roomsByHost = catchAsync(async (req, res) => {
 
 const roomsByGuest = catchAsync(async (req, res) => {
   const userId = req.user.id;
-
   const rooms = await roomService.roomsByGuest(userId);
   return res.status(200).json({ data: rooms });
 });
