@@ -91,6 +91,10 @@ const joinRoom = async (roomId, user) => {
   }
 };
 
+const inquireHostbyRoomId = async (roomId) => {
+  return await roomDao.inquireHostbyRoomId(roomId);
+};
+
 export default {
   roomsByGuest,
   createRoom,
@@ -100,4 +104,5 @@ export default {
   ages,
   times,
   joinRoom,
+  inquireHostbyRoomId,
 };
