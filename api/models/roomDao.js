@@ -1,4 +1,4 @@
-import { dataSource } from './dataSource.js';
+import { dataSource } from "./dataSource.js";
 
 const checkExistingRoom = async (restaurantId, hostId, date, timeId) => {
   return await dataSource.query(
@@ -65,7 +65,7 @@ const createRoom = async (roomposts) => {
     return result;
   } catch (err) {
     const error = new Error();
-    error.message = 'INVALID_DATA_INPUT';
+    error.message = "INVALID_DATA_INPUT";
     error.statusCode = 400;
     throw error;
   }
@@ -100,7 +100,7 @@ const roomsByHost = async (userId) => {
     );
     return rooms;
   } catch {
-    const error = new Error('DATASOURCE_ERROR');
+    const error = new Error("DATASOURCE_ERROR");
     error.statusCode = 400;
     throw error;
   }
@@ -128,7 +128,7 @@ const roomsByGuest = async (userId) => {
     );
     return rooms;
   } catch {
-    const error = new Error('DATASOURCE_ERROR');
+    const error = new Error("DATASOURCE_ERROR");
     error.statusCode = 400;
     throw error;
   }
@@ -164,7 +164,7 @@ const roomsByMe = async (userId) => {
     );
     return rooms;
   } catch {
-    const error = new Error('DATASOURCE_ERROR');
+    const error = new Error("DATASOURCE_ERROR");
     error.statusCode = 400;
     throw error;
   }
@@ -178,10 +178,11 @@ const ages = async () => {
         id, 
         age_range
       FROM ages
+      LIMIT 8
       `
     );
   } catch {
-    const error = new Error('DATASOURCE_ERROR');
+    const error = new Error("DATASOURCE_ERROR");
     error.statusCode = 400;
     throw error;
   }
@@ -195,10 +196,11 @@ const genders = async () => {
         id, 
         gender
       FROM genders
+      LIMIT 3
       `
     );
   } catch {
-    const error = new Error('DATASOURCE_ERROR');
+    const error = new Error("DATASOURCE_ERROR");
     error.statusCode = 400;
     throw error;
   }
@@ -212,10 +214,11 @@ const times = async () => {
         id, 
         hour
       FROM times
+      LIMIT 24
       `
     );
   } catch {
-    const error = new Error('DATASOURCE_ERROR');
+    const error = new Error("DATASOURCE_ERROR");
     error.statusCode = 400;
     throw error;
   }

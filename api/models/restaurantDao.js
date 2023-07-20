@@ -16,52 +16,13 @@ const districts = async () => {
     throw error;
   }
 };
-const getRestaurantList = async (conditionQuery) => {
+const getRestaurantList = async (
+  roomsQuery,
+  restaurantsQuery,
+  limit,
+  offset
+) => {
   try {
-    let conditionRoomsQuery = [];
-    let conditionRestaurantQuery = [];
-    const {
-      district,
-      date,
-      time,
-      age,
-      gender,
-      limit = 3,
-      offset = 0,
-    } = conditionQuery;
-    if (district) {
-      conditionRestaurantQuery.push(`restaurants.district_id = ${district}`);
-    }
-    if (date) {
-      conditionRoomsQuery.push(`rooms.date = '${date.substring(0, 10)}'`);
-    }
-    if (age) {
-      conditionRoomsQuery.push(`rooms.age_id = ${age}`);
-    }
-    if (time) {
-      conditionRoomsQuery.push(`rooms.time_id = ${time}`);
-    }
-    if (gender) {
-      conditionRoomsQuery.push(`rooms.gender_id = ${gender}`);
-    }
-    const totalConditionQuery = conditionRoomsQuery.join(" AND ");
-    const roomsQuery = `
-      SELECT rooms.restaurant_id AS 'restaurantId',
-      rooms.id AS 'roomsId',
-      rooms.title AS 'roomsTitle'
-      FROM rooms
-      JOIN restaurants ON restaurants.id = rooms.restaurant_id
-      WHERE ${totalConditionQuery}
-      AND ${conditionRestaurantQuery}
-    `;
-    const restaurantsQuery = `
-      SELECT restaurants.id AS 'restaurantId',
-      restaurants.name AS 'restaurantName',
-      restaurant_images.image AS 'restaurantImage'
-      FROM restaurants
-      JOIN restaurant_images ON restaurant_images.restaurant_id = restaurants.id
-      WHERE ${conditionRestaurantQuery}
-      `;
     const roomsData = await dataSource.query(roomsQuery);
     let restaurantsData = {};
     restaurantsData = await dataSource.query(restaurantsQuery);
