@@ -1,4 +1,4 @@
-import { restaurantDao } from '../models/index.js';
+import { restaurantDao } from "../models/index.js";
 
 const districts = async () => {
   return await restaurantDao.districts();
@@ -10,7 +10,7 @@ const getRestaurantInfo = async (restaurantId) => {
   const existRestaurant = restaurant.restaurantId;
 
   if (existRestaurant === null) {
-    const error = new Error('INVALID_RESTAURANT_ID');
+    const error = new Error("INVALID_RESTAURANT_ID");
     error.statusCode = 404;
 
     throw error;
@@ -26,15 +26,15 @@ const getQuery = (beforeQuery) => {
     conditionRestaurantQuery.push(`restaurants.district_id = ${district}`);
   }
   if (date) {
-    conditionRoomsQuery.push(`rooms.date = '${date.substring(0, 10)}'`);
+    conditionRoomsQuery.push(`rooms.date = '${date}'`);
   }
-  if (age) {
+  if (age && age != 8) {
     conditionRoomsQuery.push(`rooms.age_id = ${age}`);
   }
   if (time) {
     conditionRoomsQuery.push(`rooms.time_id = ${time}`);
   }
-  if (gender) {
+  if (gender && gender != 3) {
     conditionRoomsQuery.push(`rooms.gender_id = ${gender}`);
   }
 
@@ -55,10 +55,12 @@ const getQuery = (beforeQuery) => {
     restaurantsQuery = `
       SELECT restaurants.id AS 'restaurantId',
       restaurants.name AS 'restaurantName',
-      restaurant_images.image AS 'restaurantImage'
+      GROUP_CONCAT(restaurant_images.image) AS 'restaurantImage'
       FROM restaurants
       JOIN restaurant_images ON restaurant_images.restaurant_id = restaurants.id
       WHERE ${conditionRestaurantQuery}
+      GROUP BY restaurants.id, restaurants.name;
+
       `;
   } else if (totalConditionQuery) {
     roomsQuery = `
@@ -71,10 +73,13 @@ const getQuery = (beforeQuery) => {
     `;
     restaurantsQuery = `
       SELECT restaurants.id AS 'restaurantId',
+
       restaurants.name AS 'restaurantName',
-      restaurant_images.image AS 'restaurantImage'
+      GROUP_CONCAT(restaurant_images.image) AS 'restaurantImage'
       FROM restaurants
       JOIN restaurant_images ON restaurant_images.restaurant_id = restaurants.id
+      GROUP BY restaurants.id, restaurants.name;
+
       `;
   } else if (conditionRestaurantQuery) {
     roomsQuery = `
@@ -88,10 +93,12 @@ const getQuery = (beforeQuery) => {
     restaurantsQuery = `
       SELECT restaurants.id AS 'restaurantId',
       restaurants.name AS 'restaurantName',
-      restaurant_images.image AS 'restaurantImage'
+      GROUP_CONCAT(restaurant_images.image) AS 'restaurantImage'
       FROM restaurants
       JOIN restaurant_images ON restaurant_images.restaurant_id = restaurants.id
       WHERE ${conditionRestaurantQuery}
+      GROUP BY restaurants.id, restaurants.name;
+
       `;
   }
   return [roomsQuery, restaurantsQuery];
