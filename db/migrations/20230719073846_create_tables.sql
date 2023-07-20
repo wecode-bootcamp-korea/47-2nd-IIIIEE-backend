@@ -39,14 +39,19 @@ CREATE TABLE rooms (
 	title varchar(30) NOT NULL,
 	content varchar(100) NOT NULL,
   image varchar (1000) null,
-  date varchar (20) not null,
-  time varchar (20) not null,
+  date DATE not null,
+  time_id int not null,
   max_num int not null,
   age_id int not null DEFAULT 3,
   gender_id int not null DEFAULT 8,
   room_status_id int not null DEFAULT 1,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE times (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  hour varchar(10) not null
 );
 
 CREATE TABLE room_status (
