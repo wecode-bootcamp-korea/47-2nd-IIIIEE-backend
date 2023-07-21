@@ -1,5 +1,6 @@
 import { createApp } from './app.js';
 import { dataSource } from './api/models/dataSource.js';
+import { reviewNotification } from './api/utils/schedule.js';
 
 const startServer = async () => {
   const app = createApp();
@@ -19,6 +20,8 @@ const startServer = async () => {
   app.get('/ping', (req, res) => {
     res.json({ message: 'pong' });
   });
+
+  reviewNotification;
 };
 
 startServer();
