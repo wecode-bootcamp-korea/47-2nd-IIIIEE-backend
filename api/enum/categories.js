@@ -17,11 +17,11 @@ const genderType = Object.freeze({
   unknown: 4,
 });
 
-const orderStatus = Object.freeze({
+const roomStatus = Object.freeze({
   CREATED: 1,
   FULL: 2,
   PURCHASED: 3,
   DONE: 4,
 });
 
-export { ageRange, genderType, orderStatus };
+export { ageRange, genderType, roomStatus };

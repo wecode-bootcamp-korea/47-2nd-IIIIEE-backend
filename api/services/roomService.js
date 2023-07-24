@@ -1,5 +1,5 @@
 import { roomDao } from '../models/index.js';
-import { ageRange, genderType, orderStatus } from '../enum/categories.js';
+import { ageRange, genderType, roomStatus } from '../enum/categories.js';
 
 const createRoom = async (roomposts) => {
   const { restaurantId, hostId, date, timeId } = roomposts;
@@ -87,7 +87,7 @@ const joinRoom = async (roomId, user) => {
   await roomDao.addMember(roomId, user.id);
 
   if (parseInt(room.count) + 1 == room.maxNum - 1) {
-    roomDao.changeStatus(roomId, orderStatus.FULL);
+    roomDao.changeStatus(roomId, roomStatus.FULL);
   }
 };
 

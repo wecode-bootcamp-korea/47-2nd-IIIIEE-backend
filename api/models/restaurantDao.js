@@ -1,4 +1,4 @@
-import { dataSource } from "./dataSource.js";
+import { dataSource } from './dataSource.js';
 
 const districts = async () => {
   try {
@@ -12,7 +12,7 @@ const districts = async () => {
       `
     );
   } catch {
-    const error = new Error("DATASOURCE_ERROR");
+    const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
@@ -38,30 +38,30 @@ const getRestaurantList = async (
         limitIndex < limit &&
         roomsIndex < roomsData.length &&
         restaurantsData[restaurantsIndex] &&
-        roomsData[roomsIndex]["restaurantId"] ===
-          restaurantsData[restaurantsIndex]["restaurantId"]
+        roomsData[roomsIndex]['restaurantId'] ===
+          restaurantsData[restaurantsIndex]['restaurantId']
       ) {
         limitIndex += 1;
         roomsDataQuery.push({
           roomIndex: limitIndex,
-          roomId: roomsData[roomsIndex]["roomsId"],
-          roomTitle: roomsData[roomsIndex]["roomsTitle"],
+          roomId: roomsData[roomsIndex]['roomsId'],
+          roomTitle: roomsData[roomsIndex]['roomsTitle'],
         });
         roomsIndex += 1;
       }
 
       if (roomsDataQuery.length > 0) {
-        restaurantsData[restaurantsIndex]["roomData"] = roomsDataQuery;
+        restaurantsData[restaurantsIndex]['roomData'] = roomsDataQuery;
       }
     }
     for (let index in restaurantsData) {
-      let imagesData = restaurantsData[index]["restaurantImage"];
-      let imagesArray = imagesData.split(",");
+      let imagesData = restaurantsData[index]['restaurantImage'];
+      let imagesArray = imagesData.split(',');
       let imagesRefactoring = [];
       for (let i in imagesArray) {
         imagesRefactoring.push({ id: Number(i) + 1, image: imagesArray[i] });
       }
-      restaurantsData[index]["restaurantImage"] = imagesRefactoring;
+      restaurantsData[index]['restaurantImage'] = imagesRefactoring;
     }
     return restaurantsData;
   } catch (error) {

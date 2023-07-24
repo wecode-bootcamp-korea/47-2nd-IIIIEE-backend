@@ -300,7 +300,7 @@ const addMember = async (roomId, userId) => {
 
 const changeStatus = async (roomId, statusId) => {
   try {
-    return await dataSource.query(
+    await dataSource.query(
       `
       UPDATE rooms
       SET room_status_id = ?
@@ -308,7 +308,7 @@ const changeStatus = async (roomId, statusId) => {
       `,
       [statusId, roomId]
     );
-  } catch {
+  } catch (err) {
     const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
