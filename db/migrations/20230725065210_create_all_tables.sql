@@ -44,7 +44,7 @@ CREATE TABLE rooms (
   max_num int not null,
   age_id int not null DEFAULT 3,
   gender_id int not null DEFAULT 8,
-	tag varchar(50) NULL,
+  price int not null,
   room_status_id int not null DEFAULT 1,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP
@@ -73,6 +73,7 @@ CREATE TABLE host_reviews (
 CREATE TABLE restaurants (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   name varchar(50) not null,
+  price int not null,
   district_id int not null,
   location_x decimal(12,8) not null,
   location_y decimal(12,8) not null,
@@ -111,6 +112,22 @@ CREATE TABLE notifications (
 CREATE TABLE messages (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   content text not null
+);
+
+CREATE TABLE orders (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  room_id int not null,
+  user_id int not null,
+  order_number varchar(30) not null,
+  total_price int not null,
+  quantity int not null default 1,
+  payment_id int null,
+  payment_method_type varchar(20)
+);
+
+CREATE TABLE payments (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  info JSON not null
 );
 
 -- migrate:down
