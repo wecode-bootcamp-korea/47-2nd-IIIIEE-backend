@@ -77,9 +77,11 @@ const roomsByHost = async (userId) => {
       `
       SELECT 
         rooms.id AS roomId,
+        rooms.title AS roomTitle,
         restaurants.id AS restaurantId, 
         restaurants.name AS restaurantName,
         host_id AS hostId, 
+        content,
         rooms.image, 
         date, 
         times.id AS timeId,
@@ -88,12 +90,15 @@ const roomsByHost = async (userId) => {
         ages.id AS ageId, 
         ages.age_range AS ageRange,
         genders.id AS genderId,
-        genders.gender
+        genders.gender,
+        room_status_id as roomStatusId,
+        room_status.name as roomStatus
       FROM rooms
       JOIN ages ON ages.id = age_id
       JOIN genders ON genders.id = gender_id
       JOIN times ON times.id = time_id
       JOIN restaurants ON restaurants.id = restaurant_id
+      JOIN room_status on room_status.id = rooms.room_status_id
       WHERE host_id = ?;
     `,
       [userId]
@@ -115,13 +120,17 @@ const roomsByGuest = async (userId) => {
         rooms.title AS roomTitle,
         restaurants.id AS restaurantId, 
         restaurants.name AS restaurantName,
+        content,
         rooms.image, 
         date,
-        times.hour
+        times.hour,
+        room_status_id as roomStatusId,
+        room_status.name as roomStatus
       FROM rooms
       JOIN restaurants ON restaurants.id = restaurant_id
       JOIN times ON times.id = time_id
       LEFT JOIN room_guests on room_guests.room_id = rooms.id
+      JOIN room_status on room_status.id = rooms.room_status_id
       WHERE room_guests.user_id = ?
     `,
       [userId]
@@ -143,9 +152,12 @@ const roomsByMe = async (userId) => {
         rooms.title AS roomTitle,
         restaurants.id AS restaurantId, 
         restaurants.name AS restaurantName,
+        content,
         rooms.image, 
         date, 
         times.hour,
+        room_status_id as roomStatusId,
+        room_status.name as roomStatus,
         JSON_ARRAYAGG(
           JSON_OBJECT(
             'id', users.id, 
@@ -153,10 +165,11 @@ const roomsByMe = async (userId) => {
             )
           ) as guests
       FROM rooms
-      JOIN times ON times.id = time_id
-      JOIN restaurants ON restaurants.id = restaurant_id
-      INNER JOIN room_guests on room_guests.room_id = rooms.id
-      JOIN users on room_guests.user_id = users.id
+      LEFT JOIN times ON times.id = time_id
+      LEFT JOIN restaurants ON restaurants.id = restaurant_id
+      LEFT JOIN room_guests on room_guests.room_id = rooms.id
+      LEFT JOIN users on room_guests.user_id = users.id
+      LEFT JOIN room_status on room_status.id = rooms.room_status_id
       WHERE host_id = ?
       GROUP BY rooms.id;
     `,
@@ -176,8 +189,9 @@ const ages = async () => {
       `
       SELECT 
         id, 
-        age_range
+        age_range AS ageRange
       FROM ages
+      LIMIT 8
       `
     );
   } catch {
@@ -195,6 +209,7 @@ const genders = async () => {
         id, 
         gender
       FROM genders
+      LIMIT 3
       `
     );
   } catch {
