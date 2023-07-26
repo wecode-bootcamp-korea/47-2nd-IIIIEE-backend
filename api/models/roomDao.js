@@ -1,4 +1,4 @@
-import { dataSource } from "./dataSource.js";
+import { dataSource } from './dataSource.js';
 
 const checkExistingRoom = async (restaurantId, hostId, date, timeId) => {
   return await dataSource.query(
@@ -65,7 +65,7 @@ const createRoom = async (roomposts) => {
     return result;
   } catch (err) {
     const error = new Error();
-    error.message = "INVALID_DATA_INPUT";
+    error.message = 'INVALID_DATA_INPUT';
     error.statusCode = 400;
     throw error;
   }
@@ -105,7 +105,7 @@ const roomsByHost = async (userId) => {
     );
     return rooms;
   } catch {
-    const error = new Error("DATASOURCE_ERROR");
+    const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
@@ -137,7 +137,7 @@ const roomsByGuest = async (userId) => {
     );
     return rooms;
   } catch {
-    const error = new Error("DATASOURCE_ERROR");
+    const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
@@ -177,7 +177,7 @@ const roomsByMe = async (userId) => {
     );
     return rooms;
   } catch {
-    const error = new Error("DATASOURCE_ERROR");
+    const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
@@ -195,7 +195,7 @@ const ages = async () => {
       `
     );
   } catch {
-    const error = new Error("DATASOURCE_ERROR");
+    const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
@@ -213,7 +213,7 @@ const genders = async () => {
       `
     );
   } catch {
-    const error = new Error("DATASOURCE_ERROR");
+    const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
@@ -231,7 +231,7 @@ const times = async () => {
       `
     );
   } catch {
-    const error = new Error("DATASOURCE_ERROR");
+    const error = new Error('DATASOURCE_ERROR');
     error.statusCode = 400;
     throw error;
   }
@@ -315,6 +315,71 @@ const changeStatus = async (roomId, statusId) => {
   }
 };
 
+const inquireHostbyRoomId = async (roomId) => {
+  try {
+    const [rooms] = await dataSource.query(
+      `
+        SELECT
+    rooms.id AS roomId,
+    restaurants.id AS restaurantId, 
+    restaurants.name AS restaurantName,
+    rooms.image AS roomImage,
+    rooms.title AS roomTitle,
+    genders.id AS genderId,
+    genders.gender AS gender,
+    room_age.id AS roomAgeId,
+    room_age.age_range AS roomAgeRange,
+    rooms.tag AS roomTag,
+    rooms.content AS roomContent,
+    EXTRACT(YEAR FROM rooms.date) AS roomYear,
+    EXTRACT(MONTH FROM rooms.date) AS roomMonth,
+    EXTRACT(DAY FROM rooms.date) AS roomDay,
+    rooms.time_id AS timeId,
+    times.hour AS reservationTime,
+    (SELECT COUNT(*) FROM room_guests WHERE room_id = rooms.id) + 1 AS numberOfRoomPeople,
+    rooms.max_num AS roomMaxPeople,
+    room_status.id AS roomStatusId,
+    room_status.name AS roomStatusName,
+    host.id AS hostId,
+    host.profile_image AS hostProfileImage,
+    host.name AS hostName,
+    genders.id AS genderId,
+    host_gender.id AS hostGenderId,
+    host_gender.gender AS hostGender,
+    host_age.id AS hostAgeId,
+    host_age.age_range AS hostAgeRange,
+    (SELECT AVG(rating) FROM host_reviews WHERE host_id = host.id) AS hostRating    
+FROM
+    rooms
+JOIN
+    restaurants ON restaurants.id = restaurant_id    
+JOIN
+    times ON rooms.time_id = times.id 
+JOIN
+    genders ON rooms.gender_id = genders.id
+JOIN
+    room_status ON rooms.room_status_id = room_status.id
+JOIN
+    users AS host ON rooms.host_id = host.id
+JOIN
+    ages AS room_age ON rooms.age_id = room_age.id
+JOIN
+    ages AS host_age ON host.age_id = host_age.id
+JOIN
+    genders AS host_gender ON host.gender_id = host_gender.id
+WHERE
+    rooms.id = ?;
+            `,
+      [roomId]
+    );
+    return rooms;
+  } catch {
+    const error = new Error('DATASOURCE_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 export default {
   createRoom,
   checkExistingRoom,
@@ -323,6 +388,7 @@ export default {
   roomsByMe,
   ages,
   genders,
+  inquireHostbyRoomId,
   times,
   isInRoom,
   getRoomInfo,

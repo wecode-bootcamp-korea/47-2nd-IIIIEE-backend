@@ -54,6 +54,19 @@ const joinRoom = catchAsync(async (req, res) => {
   return res.status(200).json({ message: 'User added to room' });
 });
 
+const inquireHostbyRoomId = catchAsync(async (req, res) => {
+  const roomId = req.params.roomId;
+
+  if (!roomId) {
+    const error = new Error('KEY_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const rooms = await roomService.inquireHostbyRoomId(roomId);
+  return res.status(200).json({ data: rooms });
+});
+
 export default {
   createRoom,
   roomsByHost,
@@ -62,5 +75,6 @@ export default {
   genders,
   ages,
   times,
+  inquireHostbyRoomId,
   joinRoom,
 };
