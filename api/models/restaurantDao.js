@@ -8,6 +8,7 @@ const districts = async () => {
         id, 
         name
       FROM districts
+      
       `
     );
   } catch {
@@ -23,6 +24,9 @@ const getRestaurantList = async (
   offset
 ) => {
   try {
+    if (!roomsQuery && !restaurantsQuery) {
+      return {};
+    }
     const roomsData = await dataSource.query(roomsQuery);
     let restaurantsData = {};
     restaurantsData = await dataSource.query(restaurantsQuery);
@@ -38,15 +42,26 @@ const getRestaurantList = async (
           restaurantsData[restaurantsIndex]["restaurantId"]
       ) {
         limitIndex += 1;
-        roomsDataQuery.push(
-          `{'roomsId' = '${roomsData[roomsIndex]["roomsId"]}','roomsTitle' = '${roomsData[roomsIndex]["roomsTitle"]}'}`
-        );
+        roomsDataQuery.push({
+          roomIndex: limitIndex,
+          roomId: roomsData[roomsIndex]["roomsId"],
+          roomTitle: roomsData[roomsIndex]["roomsTitle"],
+        });
         roomsIndex += 1;
       }
-      let roomsTotalQuery = roomsDataQuery.join("");
-      if (roomsTotalQuery) {
-        restaurantsData[restaurantsIndex]["roomsData"] = roomsTotalQuery;
+
+      if (roomsDataQuery.length > 0) {
+        restaurantsData[restaurantsIndex]["roomData"] = roomsDataQuery;
       }
+    }
+    for (let index in restaurantsData) {
+      let imagesData = restaurantsData[index]["restaurantImage"];
+      let imagesArray = imagesData.split(",");
+      let imagesRefactoring = [];
+      for (let i in imagesArray) {
+        imagesRefactoring.push({ id: Number(i) + 1, image: imagesArray[i] });
+      }
+      restaurantsData[index]["restaurantImage"] = imagesRefactoring;
     }
     return restaurantsData;
   } catch (error) {
