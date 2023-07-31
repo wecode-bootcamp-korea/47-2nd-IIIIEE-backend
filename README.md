@@ -8,13 +8,13 @@
 - 개발 기간 : 2023/07/14 ~ 2023/07/28
   
 - 개발 인원 : 프론트엔드 2명 , 백엔드 4명
-  - Product Manager: 김상원(B)<a href="https://github.com/Teachsue"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/Teachsue"/></a>
-  - Project Manager: 최리나(B)<a href="https://github.com/lchoe24"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/lchoe24"/></a> 
+  - Product Manager: <a href="https://github.com/Teachsue">김상원(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/Teachsue"/>
+  - Project Manager: <a href="https://github.com/lchoe24">최리나(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/lchoe24"/> 
   - Teammates: </br>
 <a href="https://github.com/donghyeun02">신동현(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/donghyeun02"/></br>
 <a href="https://github.com/5yoonl">양회진(F)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/5yoonl"/></br>
-<a href="https://github.com/jseongnam">정성남(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jseongnam"/></a></br>
-<a href="https://github.com/jjinichoi">최진이(F)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jjinichoi"/></a></br>
+<a href="https://github.com/jseongnam">정성남(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jseongnam"/></br>
+<a href="https://github.com/jjinichoi">최진이(F)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jjinichoi"/></br>
 
 - 깃헙 레포지토리
   - [Frontend](https://github.com/wecode-bootcamp-korea/47-2nd-IIIIEE-frontend)
