@@ -11,10 +11,10 @@
   - Product Manager: 김상원(B)<a href="https://github.com/Teachsue"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/Teachsue"/></a>
   - Project Manager: 최리나(B)<a href="https://github.com/lchoe24"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/lchoe24"/></a> 
   - Teammates: </br>
-신동현(B)<a href="https://github.com/donghyeun02"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/donghyeun02"/></br>
-양회진(F)<a href="https://github.com/5yoonl"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/5yoonl"/></br>
-정성남(B)<a href="https://github.com/jseongnam"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jseongnam"/></a></br>
-최진이(F)<a href="https://github.com/jjinichoi"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jjinichoi"/></a></br>
+<a href="https://github.com/donghyeun02">신동현(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/donghyeun02"/></br>
+<a href="https://github.com/5yoonl">양회진(F)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/5yoonl"/></br>
+<a href="https://github.com/jseongnam">정성남(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jseongnam"/></a></br>
+<a href="https://github.com/jjinichoi">최진이(F)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jjinichoi"/></a></br>
 
 - 깃헙 레포지토리
   - [Frontend](https://github.com/wecode-bootcamp-korea/47-2nd-IIIIEE-frontend)
