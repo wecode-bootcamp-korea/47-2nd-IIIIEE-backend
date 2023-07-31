@@ -12,7 +12,7 @@
   - Project Manager: <a href="https://github.com/lchoe24">최리나(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/lchoe24"/> 
   - Teammates: </br>
 <a href="https://github.com/donghyeun02">신동현(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/donghyeun02"/></br>
-<a href="https://github.com/5yoonl">양회진(F)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/5yoonl"/></br>
+<a href="https://github.com/hjyang369">양회진(F)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/hjyang369"/></br>
 <a href="https://github.com/jseongnam">정성남(B)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jseongnam"/></br>
 <a href="https://github.com/jjinichoi">최진이(F)</a><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/jjinichoi"/></br>
 
@@ -37,7 +37,7 @@
 |메인페이지/필터링|최진이|정성남| 
 |방 등록하기/이미지 올리기||김상원|
 |방 신청하기||최리나|
-||ALL||
+|ERD|ALL|ALL|
 |카카오페이 결제||최리나|
 |알림 기능||신동현|
 |댓글 남기기||정성남|  
@@ -69,3 +69,11 @@
 <img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white"/>
 <img src="https://img.shields.io/badge/VSCode-007ACC?style=flat&logo=Visual Studio Code&logoColor=white"/>
 </div>
+참고자료
+
+Trello - Ticket management</br>
+https://trello.com/b/HrqeM69z/iiiiee
+
+ERD</br>
+https://drawsql.app/teams/lena-4/diagrams/-3
+
